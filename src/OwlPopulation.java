@@ -79,27 +79,36 @@ public class OwlPopulation {
         //TODO: a brief overview of what you can do to implement this method is given below:
 
         //1) determine (and store) the distinct owls in the other population.
-        String uniqueOwlsIndex = "";
         int numUnique = 0;
+        boolean distinct;
+        int index = 0;
+        boolean[] distinctArray = new boolean[other.data.length];
         for (int i = 0; i<other.data.length; i++) {
-            boolean unique = true;
+            distinct = true;
             for (int j = 0; j<data.length; j++) {
-                while (unique) {
-                    if ( other.data[j].equals(data[i])){
-                        unique = false;
-                        numUnique++;
-                    }
+                    if ( other.data[i].equals(data[j])){
+                      distinct= false;
 
                 }
             }
+            distinctArray[i] = distinct;
+            if (distinct)
+              numUnique++;
         }
-
-        System.out.println(numUnique);
-        //2) make a new data array to hold the correct number of owls for the merged population
-
-        //3) copy over the distinct owls from each population to the data array
-
-        //4) set the new data array to "this" data (where is the merged population? what happens to the original populations?)
+        Owl[] uniqueOwls= new Owl[data.length + numUnique];
+        for (int i = 0; i < uniqueOwls.length; i++) {
+          if (i < data.length){
+            uniqueOwls[i] = data[i];
+       } else { 
+           while (!distinctArray[index]) {
+             index++;
+           }
+           uniqueOwls[i] = other.data[index];
+           index++;
+           
+         }
+        }
+        data = uniqueOwls;
     }
 
     public int popSize(){
@@ -117,16 +126,18 @@ public class OwlPopulation {
 
             //The following should run when you are complete. Feel free to comment out as you see fit while you work.
             OwlPopulation pop1 = new OwlPopulation("owlPopulation1.csv");
-//            System.out.println(pop1 == null);
-//            System.out.println(pop1.popSize());
+            System.out.println(pop1 == null);
+            System.out.println(pop1.popSize());
 
             OwlPopulation pop2 = new OwlPopulation("owlPopulation2.csv");
-//            system.out.println(pop1);
-//            system.out.println(pop2);
-//            System.out.println(pop2.popSize());
+            System.out.println(pop1);
+            System.out.println(pop2);
+            System.out.println(pop2.popSize());
 
             pop1.merge(pop2);
-//            System.out.println(pop1);
+
+            System.out.println(pop1);
+            System.out.println(pop1.popSize());
 
         }
         catch (FileNotFoundException f){
